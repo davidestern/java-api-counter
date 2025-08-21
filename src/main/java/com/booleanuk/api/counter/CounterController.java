@@ -12,18 +12,18 @@ public class CounterController {
 
     @GetMapping("/value")
     public Integer getCurrentValue() {
-        return null;
+        return this.value;
     }
 
     @GetMapping("/increment")
     public Integer increment() {
-        return null;
+        value += 1;
+        return value;
     }
 
     @GetMapping("/decrement")
     public Integer decrement() {
-        return null;
+        value -= 1;
+        return value;
     }
-
-
 }
