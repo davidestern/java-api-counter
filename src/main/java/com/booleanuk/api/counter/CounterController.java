@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController()
@@ -16,7 +17,8 @@ public class CounterController {
     private List<Counter> counterList;
 
     public CounterController() {
-        this.counterList = List.of(new Counter("default", 0));
+        this.counterList = new ArrayList<>();
+        this.counterList.add(new Counter("default", 0));
     }
 
     @GetMapping("/value")
@@ -38,17 +40,37 @@ public class CounterController {
 
     @GetMapping("/custom/{name}")
     public Integer createOrFindCounter(@PathVariable String name) {
-        return null;
+        for (Counter c : counterList) {
+            if (c.getName().equals(name)) {
+                return c.getValue();
+            }
+        }
+        counterList.add(new Counter(name, 0));
+        return 0;
     }
 
     @GetMapping("/custom/{name}/increment")
     public Integer incrementCustomCounter(@PathVariable String name) {
-        return null;
+        for (Counter c : counterList) {
+            if (c.getName().equals(name)) {
+                c.setValue(c.getValue() + 1);
+                return c.getValue();
+            }
+        }
+        counterList.add(new Counter(name, 1));
+        return 1;
     }
 
     @GetMapping("/custom/{name}/decrement")
     public Integer decrementCustomCounter(@PathVariable String name) {
-        return null;
+        for (Counter c : counterList) {
+            if (c.getName().equals(name)) {
+                c.setValue(c.getValue() - 1);
+                return c.getValue();
+            }
+        }
+        counterList.add(new Counter(name, -1));
+        return -1;
     }
 
     // Getter for list
